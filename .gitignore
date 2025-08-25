@@ -1,0 +1,15 @@
+# Build artifacts
+/target/
+**/target/
+
+# IDE/editor
+.vscode/
+.idea/
+*.rs.bk
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log 

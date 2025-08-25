@@ -4,3 +4,19 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
+rustfft = "6"
+num-complex = "0.4"
+clap = { version = "4", features = ["derive"] }
+thiserror = "1"
+
+[[bin]]
+name = "bs"
+path = "src/bin/bs.rs"
+
+[[bin]]
+name = "heston"
+path = "src/bin/heston.rs"
+
+[[bin]]
+name = "vg"
+path = "src/bin/vg.rs"
