@@ -13,15 +13,21 @@ struct Args {
     #[arg(long, default_value = "0.3")] sigma: f64,
     #[arg(long, default_value = "0.5")] nu: f64,
     #[arg(long, default_value = "-0.4")] theta: f64,
+    /// Optional FFT damping (if omitted, print sweep)
+    #[arg(long)] alpha: Option<f64>,
+    /// Optional FFT step size (if omitted, print sweep)
+    #[arg(long)] eta: Option<f64>,
+    /// Optional FFT exponent n, N = 2^n (if omitted, print sweep)
+    #[arg(long)] n: Option<usize>,
 }
 
 fn main() {
     let args = Args::parse();
     let model = VarianceGamma { sigma: args.sigma, nu: args.nu, theta: args.theta };
 
-    let alpha_values = vec![1.01, 1.25, 1.50, 1.75, 2.00, 5.00];
-    let eta_values = vec![0.10, 0.25];
-    let n_values = vec![6usize, 10usize];
+    let alpha_values = match args.alpha { Some(a) => vec![a], None => vec![1.01, 1.25, 1.50, 1.75, 2.00, 5.00] };
+    let eta_values = match args.eta { Some(e) => vec![e], None => vec![0.10, 0.25] };
+    let n_values = match args.n { Some(n) => vec![n], None => vec![6usize, 10usize] };
 
     println!("Model = VG");
     println!("eta\tN\talpha\tput");

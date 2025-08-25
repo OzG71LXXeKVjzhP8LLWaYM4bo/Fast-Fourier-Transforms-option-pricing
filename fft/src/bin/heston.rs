@@ -15,15 +15,21 @@ struct Args {
     #[arg(long, default_value = "0.3")] vol_of_vol: f64,
     #[arg(long, default_value = "-0.7")] rho: f64,
     #[arg(long, default_value = "0.04")] v0: f64,
+    /// Optional FFT damping (if omitted, print sweep)
+    #[arg(long)] alpha: Option<f64>,
+    /// Optional FFT step size (if omitted, print sweep)
+    #[arg(long)] eta: Option<f64>,
+    /// Optional FFT exponent n, N = 2^n (if omitted, print sweep)
+    #[arg(long)] n: Option<usize>,
 }
 
 fn main() {
     let args = Args::parse();
     let model = Heston { kappa: args.kappa, theta: args.theta, vol_of_vol: args.vol_of_vol, rho: args.rho, v0: args.v0 };
 
-    let alpha_values = vec![1.01, 1.25, 1.50, 1.75, 2.00, 5.00];
-    let eta_values = vec![0.10, 0.25];
-    let n_values = vec![6usize, 10usize];
+    let alpha_values = match args.alpha { Some(a) => vec![a], None => vec![1.01, 1.25, 1.50, 1.75, 2.00, 5.00] };
+    let eta_values = match args.eta { Some(e) => vec![e], None => vec![0.10, 0.25] };
+    let n_values = match args.n { Some(n) => vec![n], None => vec![6usize, 10usize] };
 
     println!("Model = Heston");
     println!("eta\tN\talpha\tput");
